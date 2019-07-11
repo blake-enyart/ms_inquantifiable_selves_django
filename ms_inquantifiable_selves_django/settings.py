@@ -40,15 +40,22 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    'edamam_service.apps.EdamamServiceConfig',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+PREREQUISITE_APPS = [
+   'django.contrib.admin',
+   'django.contrib.auth',
+   'django.contrib.contenttypes',
+   'django.contrib.sessions',
+   'django.contrib.messages',
+   'django.contrib.staticfiles',
 ]
+
+PROJECT_APPS = [
+   'edamam_service.apps.EdamamServiceConfig',
+   'rest_framework',
+   'django_extensions',
+]
+
+INSTALLED_APPS = PREREQUISITE_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -61,6 +68,14 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'ms_inquantifiable_selves_django.urls'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+}
 
 TEMPLATES = [
     {
