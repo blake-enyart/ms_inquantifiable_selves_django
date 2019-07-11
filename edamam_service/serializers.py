@@ -1,0 +1,7 @@
+from edamam_service.models import Snippet
+from rest_framework import serializers
+
+class SnippetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Snippet
+        fields = ('id', 'title', 'code', 'linenos', 'language', 'style')
