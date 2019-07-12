@@ -5,6 +5,6 @@ import json
 from django.conf import settings
 
 def get_json(query):
-    url = f"https://api.edamam.com/search?app_id={settings.APP_ID}&app_key={settings.API_KEY}&q={query}"
+    url = f"https://api.edamam.com/search?app_id={settings.APP_ID}&app_key={settings.API_KEY}&q={query}&to=100"
     response = requests.get(url)
     return json.loads(response.text)
