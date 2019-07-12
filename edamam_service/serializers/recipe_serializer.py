@@ -1,7 +1,7 @@
-from edamam_service.models import Chart
+from edamam_service.models import Recipe
 from rest_framework import serializers
 
-class ChartSerializer(serializers.ModelSerializer):
+class RecipeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Chart
+        model = Recipe
         fields = ('id', 'image_url', 'ingredient_count', 'name', 'url')
