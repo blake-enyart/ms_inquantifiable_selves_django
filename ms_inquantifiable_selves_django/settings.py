@@ -13,31 +13,38 @@ import django_heroku
 
 import os
 import environ
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-# reading .env file
-environ.Env.read_env()
 
-# False if not in os.environ
-DEBUG = env('DEBUG')
-
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(PROJECT_DIR)
 
+env = environ.Env(
+    DB_NAME=str,
+    DB_USER=str,
+    DB_PASS=str,
+    DEBUG=(bool, False),
+    app_id=str,
+    api_key=str,
+    SECRET_KEY=str,
+)
+
+env_path = os.path.join(BASE_DIR, '.env') # setting the absolute path to .env file
+environ.Env.read_env(env_path) # reading .env file
+
+# Hidden Variables
+APP_ID = env('APP_ID')
+API_KEY = env('API_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@fh002whj0qmwb=w3fpq0y0bf#e+&_*m#-+(-i!7ps*sb8#m-o'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -103,7 +110,6 @@ WSGI_APPLICATION = 'ms_inquantifiable_selves_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': os.environ.get('DB_NAME', ''),
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASS'),
