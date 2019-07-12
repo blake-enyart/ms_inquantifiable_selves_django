@@ -1,2 +1,3 @@
 from .snippet import Snippet
-from .chart import Chart
+from .food import Food
+from .recipe import Recipe
