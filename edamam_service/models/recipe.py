@@ -7,7 +7,7 @@ class Recipe(models.Model):
     ingredient_count = models.PositiveIntegerField(blank=False)
     name = models.CharField(max_length=200, blank=False)
     url = models.TextField(blank=False, db_index=True)
-    recipes = models.ManyToManyField(Food, related_name='foods')
+    foods = models.ManyToManyField(Food, related_name='recipes')
 
     class Meta:
         ordering = ('created',)
