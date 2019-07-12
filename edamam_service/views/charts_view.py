@@ -4,26 +4,31 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from ..services.recipe_service import RecipeService
-from edamam_service.models import Chart
-from edamam_service.serializers import ChartSerializer
+from edamam_service.models import Recipe, Food
+from edamam_service.serializers import RecipeSerializer
 
 class ChartList(generics.CreateAPIView, APIView):
-    queryset = Chart.objects.all()
-    serializer_class = ChartSerializer
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
 
     def get(self, request, format=None):
         query = request.query_params['q']
-        in_db = Chart.objects.filter(name=query)
+        in_db = Food.objects.filter(name=query)
 
         if in_db:
-            queryset = in_db
-            serializer = ChartSerializer(queryset, many=True)
+            queryset = in_db[0].recipes.all()
+            serializer = RecipeSerializer(queryset, many=True)
             return Response(serializer.data)
         else:
             recipe_service = RecipeService(query)
             response = recipe_service.get_recipes()
-            return JsonResponse(response, safe=False)
+            recipe_service.save_to_db()
+
+            new_food = Food.objects.filter(name=query)
+            queryset = new_food[0].recipes.all()
+            serializer = RecipeSerializer(queryset, many=True)
+            return Response(serializer.data)
 
 class ChartDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Chart.objects.all()
-    serializer_class = ChartSerializer
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
